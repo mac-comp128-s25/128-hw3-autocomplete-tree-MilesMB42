@@ -59,13 +59,7 @@ public class PrefixTree {
             nodeLetter = nodeLetter.children.get(word.charAt(c));
         }
 
-        if (nodeLetter.isWord){
-            return true;
-        }
-
-        else{
-            return false;
-        }
+        return nodeLetter.isWord;
     }
 
     /**
