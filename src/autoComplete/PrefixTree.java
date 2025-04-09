@@ -33,8 +33,10 @@ public class PrefixTree {
                 newCharNode.letter = character;
                 nodeLetter.children.put(character, newCharNode);
             }
+
             nodeLetter = nodeLetter.children.get(character); // makes pointer the character
         }
+
         if (!nodeLetter.isWord){
             nodeLetter.isWord = true;
             size++;
@@ -56,9 +58,11 @@ public class PrefixTree {
             }
             nodeLetter = nodeLetter.children.get(word.charAt(c));
         }
+
         if (nodeLetter.isWord){
             return true;
         }
+
         else{
             return false;
         }
@@ -78,7 +82,7 @@ public class PrefixTree {
         }
         recursiveWordFinder(nodeLetter, prefix, prefixWords, new StringBuffer());
 
-        //TODO: complete me
+
         return prefixWords;
     }
 
@@ -93,17 +97,10 @@ public class PrefixTree {
             return;
         }
 
-        for (TreeNode newNode : localRoot.children.values()){
-            
+        for (TreeNode newNode : localRoot.children.values()){   
             recursiveWordFinder(newNode, prefix, prefixWords, word);
         }
         
-    }
-        
-
-    private void add(StringBuffer prefixWord) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
     /**
