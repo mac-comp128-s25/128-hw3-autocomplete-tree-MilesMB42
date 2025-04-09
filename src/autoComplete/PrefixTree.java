@@ -24,8 +24,23 @@ public class PrefixTree {
      * @param word
      */
     public void add(String word){
-        //TODO: complete me
+
+        TreeNode nodeLetter = root; // start at root
+        for (int c = 0; c < word.length(); c++){ // for each letter in the word
+            char character = word.charAt(c);
+            if (!nodeLetter.children.containsKey(character)){
+                TreeNode newCharNode = new TreeNode();
+                newCharNode.letter = character;
+                nodeLetter.children.put(character, newCharNode);
+            }
+            nodeLetter = nodeLetter.children.get(character); // makes pointer the character
+        }
+        if (!nodeLetter.isWord){
+            nodeLetter.isWord = true;
+            size++;
+        }
     }
+    
 
     /**
      * Checks whether the word has been added to the tree
@@ -33,8 +48,20 @@ public class PrefixTree {
      * @return true if contained in the tree.
      */
     public boolean contains(String word){
-        //TODO: complete me
-        return false;
+
+        TreeNode nodeLetter = root;
+        for (int c = 0; c < word.length(); c++){
+            if (!nodeLetter.children.containsKey(word.charAt(c))){
+                return false;
+            }
+            nodeLetter = nodeLetter.children.get(word.charAt(c));
+        }
+        if (nodeLetter.isWord){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -44,8 +71,39 @@ public class PrefixTree {
      * @return list of words with prefix
      */
     public ArrayList<String> getWordsForPrefix(String prefix){
+        ArrayList<String> prefixWords = new ArrayList<String>();
+        TreeNode nodeLetter = root;
+        for (int c = 0; c < prefix.length(); c++){ // gets node to point to the last letter of the prefex
+            nodeLetter = nodeLetter.children.get(prefix.charAt(c));
+        }
+        recursiveWordFinder(nodeLetter, prefix, prefixWords, new StringBuffer());
+
         //TODO: complete me
-        return null;
+        return prefixWords;
+    }
+
+    private void recursiveWordFinder(TreeNode localRoot, String prefix, ArrayList<String> prefixWords, StringBuffer prefixWord){
+        StringBuffer word = new StringBuffer(prefixWord); // current letters down the list current search
+        word.append(String.valueOf(localRoot.letter));
+        if (localRoot.isWord){
+            prefixWords.add(prefix.substring(0, prefix.length()-1) + word);
+        }
+
+        if (localRoot.children == null){ // if no children left, end
+            return;
+        }
+
+        for (TreeNode newNode : localRoot.children.values()){
+            
+            recursiveWordFinder(newNode, prefix, prefixWords, word);
+        }
+        
+    }
+        
+
+    private void add(StringBuffer prefixWord) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'add'");
     }
 
     /**
